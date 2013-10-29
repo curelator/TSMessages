@@ -11,7 +11,8 @@
 
 #define kTSMessageDisplayTime 1.5
 #define kTSMessageExtraDisplayTimePerPixel 0.04
-#define kTSMessageAnimationDuration 0.3
+#define kTSMessageAnimationDuration 0.1
+#define kTSMessageHover NO
 
 
 
@@ -152,6 +153,7 @@ __weak static UIViewController *_defaultViewController;
     notificationActive = YES;
     
     TSMessageView *currentView = [self.messages objectAtIndex:0];
+    UIView *topView = currentView.viewController.view.subviews.firstObject;
     
     __block CGFloat verticalOffset = 0.0f;
     
@@ -200,7 +202,7 @@ __weak static UIViewController *_defaultViewController;
         }
     }
     
-    CGPoint toPoint;
+    CGPoint toPoint, topViewToPoint;
     if (currentView.messagePosition == TSMessageNotificationPositionTop)
     {
         CGFloat navigationbarBottomOfViewController = 0;
@@ -210,6 +212,8 @@ __weak static UIViewController *_defaultViewController;
         
         toPoint = CGPointMake(currentView.center.x,
                               navigationbarBottomOfViewController + verticalOffset + CGRectGetHeight(currentView.frame) / 2.0);
+        topViewToPoint = CGPointMake(topView.center.x, navigationbarBottomOfViewController + verticalOffset/2.0 + CGRectGetHeight(topView.frame) / 2.0);
+        
     }
     else
     {
@@ -222,6 +226,9 @@ __weak static UIViewController *_defaultViewController;
 
     dispatch_block_t animationBlock = ^{
         currentView.center = toPoint;
+        if (!kTSMessageHover) {
+            topView.center = topViewToPoint;
+        }
         if (![TSMessage iOS7StyleEnabled]) {
             currentView.alpha = TSMessageViewAlpha;
         }
@@ -267,14 +274,18 @@ __weak static UIViewController *_defaultViewController;
 - (void)fadeOutNotification:(TSMessageView *)currentView
 {
     currentView.messageIsFullyDisplayed = NO;
+    
+    UIView *topView = currentView.viewController.view.subviews.firstObject;
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self
                                              selector:@selector(fadeOutNotification:)
                                                object:currentView];
     
-    CGPoint fadeOutToPoint;
+    CGPoint fadeOutToPoint, fadeOutTopViewToPoint;
     if (currentView.messagePosition == TSMessageNotificationPositionTop)
     {
         fadeOutToPoint = CGPointMake(currentView.center.x, -CGRectGetHeight(currentView.frame)/2.f);
+        fadeOutTopViewToPoint = CGPointMake(topView.center.x, CGRectGetHeight(topView.frame)/2.f);
     }
     else
     {
@@ -285,6 +296,9 @@ __weak static UIViewController *_defaultViewController;
     [UIView animateWithDuration:kTSMessageAnimationDuration animations:^
      {
          currentView.center = fadeOutToPoint;
+         if (!kTSMessageHover) {
+             topView.center = fadeOutTopViewToPoint;
+         }
          if (![TSMessage iOS7StyleEnabled]) {
              currentView.alpha = 0.f;
          }
