@@ -236,14 +236,14 @@ static NSMutableDictionary *_notificationDesign;
         {
             _button = [UIButton buttonWithType:UIButtonTypeCustom];
             
-            UIImage *buttonBackgroundImage = [[UIImage imageNamed:[current valueForKey:@"buttonBackgroundImageName"]] resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 12.0, 15.0, 11.0)];
+            //            UIImage *buttonBackgroundImage = [[UIImage imageNamed:[current valueForKey:@"buttonBackgroundImageName"]] resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 12.0, 15.0, 11.0)];
             
-            if (!buttonBackgroundImage)
-            {
-                buttonBackgroundImage = [[UIImage imageNamed:[current valueForKey:@"NotificationButtonBackground"]] resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 12.0, 15.0, 11.0)];
-            }
+            //            if (!buttonBackgroundImage)
+            //            {
+            //                buttonBackgroundImage = [[UIImage imageNamed:[current valueForKey:@"NotificationButtonBackground"]] resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 12.0, 15.0, 11.0)];
+            //            }
             
-            [self.button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
+            //            [self.button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
             [self.button setTitle:self.buttonTitle forState:UIControlStateNormal];
             
             UIColor *buttonTitleShadowColor = [UIColor colorWithHexString:[current valueForKey:@"buttonTitleShadowColor"] alpha:1.0];
@@ -399,7 +399,7 @@ static NSMutableDictionary *_notificationDesign;
     
     if (self.button)
     {
-        self.button.frame = CGRectMake(self.frame.size.width - self.textSpaceRight,
+        self.button.frame = CGRectMake(self.titleLabel.frame.origin.x + self.titleLabel.frame.size.width,
                                        round((self.frame.size.height / 2.0) - self.button.frame.size.height / 2.0),
                                        self.button.frame.size.width,
                                        self.button.frame.size.height);
