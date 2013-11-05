@@ -12,7 +12,7 @@
 #define kTSMessageDisplayTime 1.5
 #define kTSMessageExtraDisplayTimePerPixel 0.04
 #define kTSMessageAnimationDuration 0.1
-#define kTSMessageHover NO
+#define kTSMessageHover YES
 
 
 
